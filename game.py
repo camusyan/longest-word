@@ -1,5 +1,6 @@
 from random import randint
 import string
+import requests
 
 class Game:
     LETTERS = string.ascii_uppercase[:27]
@@ -15,4 +16,10 @@ class Game:
                 return False
         if len(grid) > 7:
             return False
-        return True
+
+        return self.__check_dictionary(grid)
+
+    def __check_dictionary(self, word):
+        r = requests.get(f"https://wagon-dictionary.herokuapp.com/{word}")
+        response = r.json()
+        return response['found']
